@@ -6,9 +6,12 @@ import org.apache.ibatis.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.cache.RedisCache;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -22,8 +25,8 @@ public class MyRedisCache implements Cache {
     private static final Logger logger = LoggerFactory.getLogger(RedisCache.class);
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private final String id; // cache instance id
-    private RedisTemplate redisTemplate;
-    private static final long EXPIRE_TIME_IN_MINUTES = 30; // redis过期时间
+    private RedisTemplate<Object,Object> redisTemplate;
+    private static final long EXPIRE_TIME_IN_MINUTES = 10; // redis过期时间
     public MyRedisCache(String id) {
         if (id == null) {
             throw new IllegalArgumentException("Cache instances require an ID");
@@ -97,8 +100,32 @@ public class MyRedisCache implements Cache {
     }
     private RedisTemplate getRedisTemplate() {
         if (redisTemplate == null) {
-            redisTemplate = ApplicationContextHolder.getBean("redisTemplate");
+            RedisConnectionFactory redisFactory = ApplicationContextHolder.getBean("redisConnectionFactory");
+            JedisConnectionFactory factory = jedisFactoryBuild(redisFactory);
+            Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = ApplicationContextHolder.getBean("jackson2JsonRedisSerializer");
+            redisTemplate = new RedisTemplate<>();
+            redisTemplate.setConnectionFactory(factory);
+            redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+            redisTemplate.setKeySerializer(jackson2JsonRedisSerializer);
+            redisTemplate.afterPropertiesSet();
         }
         return redisTemplate;
+    }
+    private JedisConnectionFactory jedisFactoryBuild(RedisConnectionFactory redisConnectionFactory){
+        JedisConnectionFactory factory = new JedisConnectionFactory();
+        JedisConnectionFactory redisFactory = (JedisConnectionFactory) redisConnectionFactory;
+        factory.setHostName(redisFactory.getHostName());
+        factory.setClientName(redisFactory.getClientName());
+        factory.setConvertPipelineAndTxResults(redisFactory.getConvertPipelineAndTxResults());
+        factory.setDatabase(1);
+        factory.setPassword(redisFactory.getPassword());
+        factory.setPoolConfig(redisFactory.getPoolConfig());
+        factory.setPort(redisFactory.getPort());
+        factory.setShardInfo(redisFactory.getShardInfo());
+        factory.setTimeout(redisFactory.getTimeout());
+        factory.setUsePool(redisFactory.getUsePool());
+        factory.setUseSsl(false);
+        factory.afterPropertiesSet();
+        return factory;
     }
 }

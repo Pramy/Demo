@@ -3,6 +3,7 @@ package com.pramy.demo.mybatis.service;
 import com.pramy.demo.mybatis.dao.PersonMapper;
 import com.pramy.demo.mybatis.po.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
