@@ -29,6 +29,10 @@ import java.util.Objects;
 public class RedisConfigure extends CachingConfigurerSupport {
 
 
+    /**
+     * 自定义默认的id生成器的生成规则
+     * @return KeyGenerator
+     */
     @Bean
     public KeyGenerator keyGenerator() {
         return (Object target, Method method, Object... params)->{
@@ -44,16 +48,22 @@ public class RedisConfigure extends CachingConfigurerSupport {
             return sb.toString();
         };
     }
+
+    /**
+     * 设置缓存的过期时间，单位为秒
+     * @return RedisCacheManager
+     */
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
-        //设置缓存过期时间
-        //rcm.setDefaultExpiration(60);//秒
         rcm.setDefaultExpiration(600);
-
         return rcm;
     }
 
+    /**
+     * 创建redis的连接，默认使用database 0
+     * @return redisTemplate
+     */
     @Bean
     public RedisTemplate<Object,Object> redisTemplate(RedisConnectionFactory factory,Jackson2JsonRedisSerializer jackson2JsonRedisSerializer){
         RedisTemplate<Object,Object> redisTemplate = new RedisTemplate<>();
@@ -63,6 +73,11 @@ public class RedisConfigure extends CachingConfigurerSupport {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
+
+    /**
+     * 定义 redis的序列化模式
+     * @return jackson2JsonRedisSerializer
+     */
     @Bean Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer(){
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
