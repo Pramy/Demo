@@ -3,6 +3,7 @@ package com.pramy.demo.mybatis.controller;
 import com.pramy.demo.mybatis.po.Person;
 import com.pramy.demo.mybatis.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,8 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
+    @Value("${spring.datasource.url:no}")
+    private String url;
 
     @PostMapping("insert.do")
     public Person insert(Person person) {
@@ -31,6 +34,7 @@ public class PersonController {
 
     @RequestMapping("select.do")
     public Person select(Long id){
+        System.out.println(url);
         return personService.selectByPrimaryKey(id);
     }
 }

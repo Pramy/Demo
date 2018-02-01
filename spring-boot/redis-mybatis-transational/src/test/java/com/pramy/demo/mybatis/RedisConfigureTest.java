@@ -1,6 +1,7 @@
 package com.pramy.demo.mybatis;
 
 import com.pramy.demo.mybatis.po.Person;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
