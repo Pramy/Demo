@@ -31,7 +31,8 @@
   值得注意的是maven项目生层的service的包路径有误所以必须加上
 
   ```xml
-  <superServiceClass>com.baomidou.mybatisplus.service.IService</superServiceClass>             <superServiceImplClass>com.baomidou.mybatisplus.service.impl.ServiceImpl</superServiceImplClass>
+  <superServiceClass>com.baomidou.mybatisplus.service.IService</superServiceClass>
+  <superServiceImplClass>com.baomidou.mybatisplus.service.impl.ServiceImpl</superServiceImplClass>
                     
   ```
 
