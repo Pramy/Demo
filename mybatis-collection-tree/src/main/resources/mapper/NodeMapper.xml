@@ -24,7 +24,7 @@
     SELECT
     <include refid="Base_Column_List"/>
     FROM node
-    WHERE parent_id = 1
+    WHERE parent_id = 0
   </select>
 
 </mapper>
