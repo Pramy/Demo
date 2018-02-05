@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author pramy
- * @since 2018-02-04
+ * @since 2018-02-05
  */
 public class Person implements Serializable {
 

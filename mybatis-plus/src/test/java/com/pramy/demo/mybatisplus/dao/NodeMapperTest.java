@@ -22,27 +22,5 @@ import java.util.List;
 public class NodeMapperTest {
 
 
-    @Autowired
-    private NodeMapper nodeMapper;
-    @Test
-    public void test() {
-        System.out.println(nodeMapper);
-    }
 
-    @Test
-    public void insert(){
-        Node node = new Node();
-        node.setName("三级节点节点");
-        node.setParentId(5);
-        System.out.println(nodeMapper.insert(node));
-    }
-    @Test
-    public void select(){
-        EntityWrapper<Node> warp = new EntityWrapper<>();
-        warp.like("name","%二%");
-        System.out.println(warp.getSqlSegment());
-        List<Node> list = nodeMapper.selectPage(
-                new Page<Node>(1,3),warp);
-        System.out.println(list);
-    }
 }

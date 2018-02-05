@@ -1,6 +1,10 @@
 package com.pramy.demo.mybatisplus.po;
 
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
 
 /**
@@ -9,16 +13,17 @@ import java.io.Serializable;
  * </p>
  *
  * @author pramy
- * @since 2018-02-04
+ * @since 2018-02-05
  */
-public class Node implements Serializable {
+public class Node extends Model<Node> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
 	/**
 	 * 
 	 */
-	private Long id;
+	@TableId(type = IdType.ID_WORKER)
+	private Integer id;
 
 	/**
 	 * 
@@ -33,11 +38,11 @@ public class Node implements Serializable {
 
 
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -57,4 +62,8 @@ public class Node implements Serializable {
 		this.parentId = parentId;
 	}
 
+	@Override
+	protected Serializable pkVal() {
+		return this.id;
+	}
 }

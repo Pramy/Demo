@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.pramy.demo</groupId>
-	<artifactId>mybatis-plus</artifactId>
+	<artifactId>mybatisplus</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -28,7 +28,24 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <!-- Log4j2 异步支持 -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.3.6</version>
+        </dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -37,11 +54,6 @@
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
-			<version>2.1.9</version>
-		</dependency>
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus</artifactId>
 			<version>2.1.9</version>
 		</dependency>
 
@@ -70,11 +82,11 @@
 				<version>1.0</version>
 				<configuration>
 					<!-- 输出目录(默认java.io.tmpdir) -->
-					<outputDir>E:\github\Demo\mybatis-plus\src\main\java</outputDir>
+					<outputDir>${project.basedir}/src/main/java</outputDir>
 					<!-- 是否覆盖同名文件(默认false) -->
 					<fileOverride>true</fileOverride>
 					<!-- mapper.xml 中添加二级缓存配置(默认true) -->
-					<enableCache>true</enableCache>
+					<enableCache>false</enableCache>
 					<!-- 开发者名称 -->
 					<author>pramy</author>
 					<!-- 是否开启 ActiveRecord 模式(默认true) -->
@@ -98,12 +110,13 @@
 						<!--Entity中的ID生成策略（默认 id_worker）-->
 						<!--<idGenType>uuid</idGenType>-->
 						<!--自定义超类-->
-						<!--<superServiceClass>com.baomidou.base.BaseService</superServiceClass>-->
-						<!-- 要包含的表 与exclude 二选一配置-->
-						<!--<include>-->
-						<!--<property>sec_user</property>-->
-						<!--<property>table1</property>-->
-						<!--</include>-->
+						<superServiceClass>com.baomidou.mybatisplus.service.IService</superServiceClass>
+                        <superServiceImplClass>com.baomidou.mybatisplus.service.impl.ServiceImpl</superServiceImplClass>
+                        <!-- 要包含的表 与exclude 二选一配置-->
+						<include>
+						<property>node</property>
+						<property>person</property>
+						</include>
 						<!-- 要排除的表 -->
 						<!--<exclude>-->
 						<!--<property>schema_version</property>-->
@@ -111,7 +124,7 @@
 					</strategy>
 					<packageInfo>
 						<!-- 父级包名称，如果不写，下面的service等就需要写全包名(默认com.baomidou) -->
-						<parent>com.pramy.demo.mybatisplus</parent>
+						<parent>${project.groupId}.${project.artifactId}</parent>
 						<!--service包名(默认service)-->
 						<service>service</service>
 						<!--serviceImpl包名(默认service.impl)-->
@@ -120,8 +133,10 @@
 						<entity>po</entity>
 						<!--mapper包名(默认mapper)-->
 						<mapper>dao</mapper>
+                        <!--mapper包名(默认web)-->
+                        <controller>controller</controller>
 						<!--xml包名(默认mapper.xml)-->
-						<xml>mapper.xml</xml>
+						<xml>mapper</xml>
 					</packageInfo>
 					<template>
 						<!-- 定义controller模板的路径 -->

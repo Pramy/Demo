@@ -1,7 +1,7 @@
 package com.pramy.demo.mybatisplus.service;
 
 import com.pramy.demo.mybatisplus.po.Person;
-import com.baomidou.framework.service.IService;
+import com.baomidou.mybatisplus.service.IService;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.baomidou.framework.service.IService;
  * </p>
  *
  * @author pramy
- * @since 2018-02-04
+ * @since 2018-02-05
  */
 public interface IPersonService extends IService<Person> {
 	
