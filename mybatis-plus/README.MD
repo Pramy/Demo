@@ -47,7 +47,15 @@
 
 # log4j2
 
-这个项目用了听说是日志之王的log4j2，实现了异步输出日志，集成springboot的方法如下
+这个项目用了听说是日志之王的log4j2，实现了异步输出日志
+
+![image](http://logging.apache.org/log4j/2.x/images/async-throughput-comparison.png)
+
+详细性能对比可以去看[log4j2官网性能对比介绍](http://logging.apache.org/log4j/2.x/performance.html)
+
+从上图看出在线程数量在4-16的情况下实现混合模式最好
+
+集成springboot的方法如下
 
 ```xml
 <dependency>
